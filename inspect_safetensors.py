@@ -1,6 +1,15 @@
 import os
+import subprocess
 from safetensors import safe_open
 import numpy as np
+
+def ensure_dependencies():
+    """Ensure that required dependencies are installed."""
+    try:
+        import torch
+    except ImportError:
+        print("PyTorch is not installed. Installing now...")
+        subprocess.check_call(["pip", "install", "torch"])
 
 def get_safe_tensor_location():
     """Prompt the user for the location of the safe tensor file."""
@@ -40,6 +49,9 @@ def display_tensor_metadata(file_path, key):
 def main():
     """Main function to orchestrate the script."""
     print("\n=== Safe Tensor Inspector ===")
+
+    # Ensure dependencies are installed
+    ensure_dependencies()
 
     # Step 1: Get the file location
     file_path = get_safe_tensor_location()
